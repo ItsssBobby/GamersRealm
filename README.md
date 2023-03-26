@@ -9,7 +9,7 @@
 ## User Story
 
 ```md
-
+As a gamer I want to join a social network that meets my gaming interests so that I can find other users and connect through the app and in game. 
 ```
 
 ## Usage information
