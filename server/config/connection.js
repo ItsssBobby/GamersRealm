@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/techmatchup",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+const DB_NAME = 'GamersRealm';
+const DB_URL = process.env.MONGODB_URI || `mongodb://127.0.0.1:27017/${DB_NAME}`;
+
+mongoose.connect(DB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 module.exports = mongoose.connection;
