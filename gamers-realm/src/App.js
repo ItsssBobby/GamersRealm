@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { useQuery } from '@apollo/client';
+import { GET_GAMES } from './graphql/queries';
+import GameList from './components/GameList';
+import SearchBar from './components/SearchBar';
+import './styles/index.css';
 
 function App() {
+  const [search, setSearch] = useState('');
+
+  const { loading, error, data } = useQuery(GET_GAMES, {
+    variables: { search },
+  });
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1>Game Reviews</h1>
+      <SearchBar search={search} setSearch={setSearch} />
+      <GameList games={data.games} />
     </div>
   );
 }
