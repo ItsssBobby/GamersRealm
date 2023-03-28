@@ -1,14 +1,16 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-import LoginForm from './components/LoginForm';
+import Navbar from './components/Navbar';
+import {home } from "./pages/home";
+import { login } from "./pages/login";
+import { signup } from "./pages/signup";
 
 function App() {
   return (
-    <>
-    <Navbar />
-    
-      </>
-  )
+    <React.Fragment>
+      <Navbar/>
+    </React.Fragment>
+  );
 }
 
 export default App;
