@@ -3,11 +3,17 @@ import { useQuery } from '@apollo/client';
 import { GET_GAMES } from './graphql/queries';
 import GameList from './components/GameList';
 import SearchBar from './components/SearchBar';
-import './styles/index.css';
+// import './styles/index.css';
+import Navbar from './components/Navbar';
 import { Login } from './login';
 import { Register} from './register';
 
 function App() {
+  return(
+  <React.Fragment>
+      <Navbar/>
+    </React.Fragment> 
+  );
   const [search, setSearch] = useState('');
 
   cosnt [currentForm, setCurrentForm] = useState('login');
