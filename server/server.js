@@ -4,15 +4,15 @@ const path = require("path");
 // files in schemas folder
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
-const { authMiddleware } = require("./util/auth");
+const { authMiddleware } = require("./utils/auth");
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-// const server = new ApolloServer({
-//   typeDefs,
-//   resolvers,
-//   context: authMiddleware,
-// });
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: authMiddleware,
+});
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

@@ -2,7 +2,7 @@ const { GraphQLScalarType } = require('graphql');
 const { Kind } = require('graphql/language');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { User, Game, Review, Comment } = require('../data/models');
+const { User, Game, Review, Comment } = require('../models');
 
 const resolvers = {
   Query: {
