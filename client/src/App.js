@@ -1,47 +1,25 @@
 import React, { useState } from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { GET_GAMES } from './graphql/queries';
-import GameList from './components/GameList';
-import SearchBar from './components/SearchBar';
+// import { GET_GAMES } from './graphql/queries';
+// import GameList from './components/GameList';
+// import SearchBar from './components/SearchBar';
 // import './styles/index.css';
 import Navbar from './components/Navbar';
 import { Login } from './login';
 import { Register} from './register';
 
 function App() {
-  return(
-  <React.Fragment>
-      <Navbar/>
-    </React.Fragment> 
-  );
-  const [search, setSearch] = useState('');
-
-  cosnt [currentForm, setCurrentForm] = useState('login');
-
-  const toggleForm =(formName)=>{
-    setCurrentForm(formName);
-  }
-
-  const { loading, error, data } = useQuery(GET_GAMES, {
-    variables: { search },
-  });
-  return(
-    <div className= "App">
-      {
-        currentForm === "login" ? <Login onFormSwitch={toggleForm}/> : <Register onFormSwitch/>
-      }
-    </div>
-  );
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
-
   return (
-    <div className="container">
-      <h1>Game Reviews</h1>
-      <SearchBar search={search} setSearch={setSearch} />
-      <GameList games={data.games} />
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <Switch>
+        {/* <Route exact path="/" component={HomePage} /> */}
+        <Route path="/register" component={Register} />
+        <Route path="/login" component={Login} />
+        {/* <Route component={NotFound} /> */}
+      </Switch>
+    </BrowserRouter>
   );
 }
 

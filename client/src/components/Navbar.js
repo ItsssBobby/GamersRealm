@@ -14,8 +14,8 @@ function Navbar () {
             <h1>Gamers Realm</h1>
             <nav ref={navRef}>
                 <a href = '/#'>Home</a>
-                <a href = '/#'>Signup</a>
-                <a href = '/#'>Login</a>
+                <a href = '/register'>Signup</a>
+                <a href = '/login'>Login</a>
                 <button className='nav-btn nav-close-btn' onClick={showNavbar}>
                     <FaTimes />
                 </button>
