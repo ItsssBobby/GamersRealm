@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 // import { GET_GAMES } from './graphql/queries';
 // import GameList from './components/GameList';
-// import SearchBar from './components/SearchBar';
+import SearchBar from './components/SearchBar';
 // import './styles/index.css';
 import Navbar from './components/Navbar';
 import { Login } from './login';
@@ -14,7 +14,7 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Switch>
-        {/* <Route exact path="/" component={HomePage} /> */}
+        <Route exact path="/" component={SearchBar} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         {/* <Route component={NotFound} /> */}
