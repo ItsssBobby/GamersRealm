@@ -1,26 +1,37 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
-// import { GET_GAMES } from './graphql/queries';
-// import GameList from './components/GameList';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import SearchBar from './components/SearchBar';
-// import './styles/index.css';
 import Navbar from './components/Navbar';
-import { Login } from './login';
-import { Register} from './register';
+import { Login } from './components/login';
+import { Register} from './components/register';
+import GameList from './components/GameList';
+
+const client = new ApolloClient({
+  uri: 'https://api.rawg.io/graphql',
+  cache: new InMemoryCache(),
+});
 
 function App() {
+  const [search, setSearch] = useState({ search: '', sortBy: 'rating' });
+
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Switch>
-        <Route exact path="/" component={SearchBar} />
-        <Route path="/register" component={Register} />
-        <Route path="/login" component={Login} />
-        {/* <Route component={NotFound} /> */}
-      </Switch>
-    </BrowserRouter>
+    <ApolloProvider client={client}>
+      <Router>
+        <Navbar />
+        <Switch>
+          <Route exact path="/">
+            <SearchBar setSearch={setSearch} />
+            <GameList search={search.search} sortBy={search.sortBy} />
+          </Route>
+          <Route path="/register" component={Register} />
+          <Route path="/login" component={Login} />
+          {/* <Route component={NotFound} /> */}
+        </Switch>
+      </Router>
+    </ApolloProvider>
   );
 }
+
 
 export default App;
