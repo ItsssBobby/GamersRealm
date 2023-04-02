@@ -29,9 +29,9 @@ export const Register = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="SearchBar h-10 flex justify-center bg-[#a9afb2]" onSubmit={handleSubmit}>
       <label htmlFor="name">Full Name</label>
-      <input
+      <input className="bg-[#a9afb2] px-3 placeholder-black"
         type="text"
         id="name"
         name="name"
@@ -39,8 +39,8 @@ export const Register = () => {
         onChange={handleNameChange}
         placeholder="Full Name"
       />
-      <label htmlFor="email">Email</label>
-      <input
+      <label className="bg-[#a9afb2]" htmlFor="email">Email</label>
+      <input className="bg-[#a9afb2] px-3 placeholder-black"
         type="email"
         id="email"
         name="email"
@@ -48,8 +48,8 @@ export const Register = () => {
         onChange={handleEmailChange}
         placeholder="you@example.com"
       />
-      <label htmlFor="password">Password</label>
-      <input
+      <label className="bg-[#a9afb2]" htmlFor="password">Password</label>
+      <input className="bg-[#a9afb2]  px-3 placeholder-black"
         type="password"
         id="password"
         name="password"
@@ -57,7 +57,7 @@ export const Register = () => {
         onChange={handlePasswordChange}
         placeholder="********"
       />
-      <button type="submit">Register</button>
+      <button className="bg-[#a9afb2]" type="submit">Register</button>
     </form>
   );
 };

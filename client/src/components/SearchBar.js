@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getGames, getGameDetails } from '../rawgApi';
 import { Link, Route, useHistory } from 'react-router-dom';
 import GameDetails from './GameDetails';
+import "../index.css"
 
 function SearchBar({ search, setSearch }) {
   const [searchData, setSearchData] = useState({ searchValue: "", sortBy: "rating" });
@@ -32,18 +33,23 @@ function SearchBar({ search, setSearch }) {
     history.push(`/game/${id}`, { gameDetails: data });
   };
 
+  // adding styling to searchbar
+  
+
   return (
+    
     <div>
       <form onSubmit={handleSubmit}>
-        <div className="search-bar">
-          <input
+        <div className="SearchBar h-10 flex justify-center bg-[#a9afb2]">
+          <input className='bg-[#a9afb2] px-2 placeholder-black'
             type="text"
             value={searchData.searchValue}
             name="searchValue"
             onChange={handleChange}
             placeholder="Search games"
+           
           />
-          <select name="sortBy" value={searchData.sortBy} onChange={handleChange}>
+        <select className="sortBy bg-[#a9afb2]" value={searchData.sortBy} onChange={handleChange}>
             <option value="rating">Rating</option>
             <option value="released">Release Date</option>
             <option value="added">Date Added</option>
@@ -55,9 +61,12 @@ function SearchBar({ search, setSearch }) {
           <button type="submit">Search</button>
         </div>
       </form>
+      {/* add styling to pop out for games */}
+      <container>
       <div className="game-list">
         {games.map((game) => (
           <div key={game.id}>
+      
             <h2>
               <Link to={`/game/${game.id}`} onClick={() => handleGameClick(game.id)}>
                 {game.name}
@@ -69,9 +78,11 @@ function SearchBar({ search, setSearch }) {
           </div>
         ))}
       </div>
+      </container>
       <Route path="/game/:id" component={GameDetails} />
     </div>
   );
 }
+
 
 export default SearchBar;
