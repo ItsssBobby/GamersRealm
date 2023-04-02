@@ -4,7 +4,7 @@ const typeDefs = gql`
   scalar Date
 
   type Query {
-    games(search: String, sort: String): [Game]
+    games(search: String, sort: String): [GameResult]
     game(id: ID!): Game
     userReviews(userId: ID!): [Review]
     reviews: [Review]
@@ -61,7 +61,7 @@ const typeDefs = gql`
     _id: ID!
     username: String!
     email: String!
-    password: String!
+    reviews: [Review]
     createdAt: Date!
     updatedAt: Date!
   }
