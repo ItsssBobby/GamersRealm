@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import { Login } from './components/login';
 import { Register} from './components/register';
 import GameList from './components/GameList';
+import "./index.css"
 
 const client = new ApolloClient({
   uri: 'https://api.rawg.io/graphql',
