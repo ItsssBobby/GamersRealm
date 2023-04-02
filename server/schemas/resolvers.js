@@ -1,45 +1,62 @@
-const { GraphQLScalarType } = require('graphql');
-const { Kind } = require('graphql/language');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { User, Game, Review, Comment } = require('../models');
-const axios= require('axios')
-require("dotenv").config()
+const { GraphQLScalarType } = require("graphql");
+const { Kind } = require("graphql/language");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { User, Game, Review, Comment } = require("../models");
+const axios = require("axios");
+require("dotenv").config();
+
+const RAWG_API_BASE_URL = "https://api.rawg.io/api";
 
 const resolvers = {
   Query: {
-    async games(_, { search, sort }, { dataSources }) {
-      return dataSources.rawgApi.getGames(search, sort);
+    async games(_, { search, sort }) {
+      const response = await axios.get(
+        `${RAWG_API_BASE_URL}/games?search=${search}&ordering=${sort}&key=${process.env.RAWG_API_KEY}`,
+        { mode: "cors" }
+      );
+      return response.data.results;
     },
 
-    async game(_, { id }, { dataSources }) {
-      return dataSources.rawgApi.getGameDetails(id);
+    async game(_, { id }) {
+      const response = await axios.get(
+        `${RAWG_API_BASE_URL}/games/${id}?key=${process.env.RAWG_API_KEY}`,
+        { mode: "cors" }
+      );
+      return response.data;
     },
 
-    async userReviews(_, { userId }, { dataSources }) {
-      return dataSources.rawgApi.getUserReviews(userId);
+    async userReviews(_, { userId }) {
+      const response = await axios.get(
+        `${RAWG_API_BASE_URL}/users/${userId}/reviews?key=${process.env.RAWG_API_KEY}`,
+        { mode: "cors" }
+      );
+      return response.data.results;
     },
 
     async reviews() {
-      return Review.find().populate('game');
+      return Review.find().populate("game");
     },
 
     async review(_, { id }) {
-      return Review.findById(id).populate('game');
+      return Review.findById(id).populate("game");
     },
-    async rawgApi(_, { game }){
-      const response = await axios.get(`https://api.rawg.io/api/games?search=${game}&key=${process.env.RAWG_API_KEY}`)
-      return response.data
-    }
+
+    async rawgApi(_, { game }) {
+      const response = await axios.get(
+        `${RAWG_API_BASE_URL}/games?search=${game}&key=${process.env.RAWG_API_KEY}`
+      );
+      return { results: response.data.results, count: response.data.count };
+    },
   },
 
   Mutation: {
     async addReview(_, { title, body, rating, gameId }, { currentUser }) {
       if (!currentUser) {
-        throw new Error('Authentication required');
+        throw new Error("Unauthorized");
       }
 
-      const review = new Review({
+      const review = await Review.create({
         title,
         body,
         rating,
@@ -47,59 +64,72 @@ const resolvers = {
         game: gameId,
       });
 
-      await review.save();
+      await User.findByIdAndUpdate(currentUser._id, {
+        $addToSet: { reviews: review._id },
+      });
 
-      return Review.populate(review, 'game');
+      return review.populate("user").populate("game").execPopulate();
     },
 
     async addComment(_, { body, reviewId }, { currentUser }) {
       if (!currentUser) {
-        throw new Error('Authentication required');
+        throw new Error("Unauthorized");
       }
 
-      const comment = new Comment({
+      const comment = await Comment.create({
         body,
         user: currentUser._id,
         review: reviewId,
       });
 
-      await comment.save();
+      await Review.findByIdAndUpdate(reviewId, {
+        $addToSet: { comments: comment._id },
+      });
 
-      return Comment.populate(comment, 'user');
+      return comment.populate("user").populate("review").execPopulate();
     },
 
     async signup(_, { username, email, password }) {
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        throw new Error("User already exists");
+      }
+
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      const user = new User({
+      const user = await User.create({
         username,
         email,
         password: hashedPassword,
       });
 
-      await user.save();
-
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
-      return { token, user };
+      return { user, token };
     },
 
     async login(_, { email, password }) {
       const user = await User.findOne({ email });
-
       if (!user) {
-        throw new Error('Invalid email or password');
+        throw new Error("Invalid credentials");
       }
 
-      const passwordMatch = await bcrypt.compare(password, user.password);
-
-      if (!passwordMatch) {
-        throw new Error('Invalid email or password');
+      const isValidPassword = await bcrypt.compare(password, user.password);
+      if (!isValidPassword) {
+        throw new Error("Invalid credentials");
       }
 
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
-      return { token, user };
+      return { user, token };
+    },
+  },
+
+  Game: {
+    reviews(game) {
+      return Review.find({ game: game._id })
+        .populate("user")
+        .populate("comments");
     },
   },
 
@@ -108,9 +138,20 @@ const resolvers = {
       return User.findById(review.user);
     },
 
-    async comments(review) {
-      const comments = await Comment.find({ review: review._id });
-      return comments.map((comment) => Comment.populate(comment, 'user'));
+    game(review) {
+      return Game.findById(review.game);
+    },
+
+    comments(review) {
+      return Comment.find({ review: review._id }).populate("user");
+    },
+
+    createdAt(review) {
+      return review.createdAt.getTime();
+    },
+
+    updatedAt(review) {
+      return review.updatedAt.getTime();
     },
   },
 
@@ -118,31 +159,70 @@ const resolvers = {
     user(comment) {
       return User.findById(comment.user);
     },
+
+    review(comment) {
+      return Review.findById(comment.review);
+    },
+
+    createdAt(comment) {
+      return comment.createdAt.getTime();
+    },
+
+    updatedAt(comment) {
+      return comment.updatedAt.getTime();
+    },
   },
 
-  Game: {
-    async reviews(game) {
-      const reviews = await Review.find({ game: game._id });
-      return reviews.map((review) => Review.populate(review, 'user'));
+  User: {
+    reviews(user) {
+      return Review.find({ user: user._id }).populate("game");
+    },
+
+    createdAt(user) {
+      return user.createdAt.getTime();
+    },
+
+    updatedAt(user) {
+      return user.updatedAt.getTime();
     },
   },
 
   Date: new GraphQLScalarType({
-    name: 'Date',
-    description: 'Custom scalar type for date',
-    parseValue(value) {
-      return new Date(value);
-    },
+    name: "Date",
+    description: "Date custom scalar type",
     serialize(value) {
       return value.getTime();
     },
+    parseValue(value) {
+      return new Date(value);
+    },
     parseLiteral(ast) {
       if (ast.kind === Kind.INT) {
-        return parseInt(ast.value, 10);
+        return new Date(parseInt(ast.value, 10));
       }
       return null;
     },
   }),
+
+  GameResult: {
+    id(game) {
+      return game.id.toString();
+    },
+
+    background_image(game) {
+      return game.background_image.replace("media/", "");
+    },
+  },
+
+  ApiResult: {
+    count(result) {
+      return result.count;
+    },
+
+    results(result) {
+      return result.results;
+    },
+  },
 };
 
 module.exports = resolvers;
