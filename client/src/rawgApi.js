@@ -4,7 +4,7 @@ const RAWG_API_BASE_URL = 'https://api.rawg.io/api';
 
 export const getGames = async (search, sortBy) => {
   const response = await fetch(
-    `${RAWG_API_BASE_URL}/games?search=${search}&ordering=${sortBy}&key=4b4018296fef49f796f340975980bc2`,
+    `${RAWG_API_BASE_URL}/games?search=${search}&ordering=${sortBy}&key=4b4018296fef49f796f340975980bc2c`,
   { mode: 'cors' }
   );
   const data = await response.json();

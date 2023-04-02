@@ -3,6 +3,8 @@ const { Kind } = require('graphql/language');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User, Game, Review, Comment } = require('../models');
+const axios= require('axios')
+require("dotenv").config()
 
 const resolvers = {
   Query: {
@@ -25,6 +27,10 @@ const resolvers = {
     async review(_, { id }) {
       return Review.findById(id).populate('game');
     },
+    async rawgApi(_, { game }){
+      const response = await axios.get(`https://api.rawg.io/api/games?search=${game}&key=${process.env.RAWG_API_KEY}`)
+      return response.data
+    }
   },
 
   Mutation: {

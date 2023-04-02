@@ -9,6 +9,7 @@ const typeDefs = gql`
     userReviews(userId: ID!): [Review]
     reviews: [Review]
     review(id: ID!): Review
+    rawgApi(game: String!): ApiResult
   }
 
   type Mutation {
@@ -21,6 +22,18 @@ const typeDefs = gql`
   type Game {
     _id: ID!
     reviews: [Review]
+  }
+
+  type GameResult {
+    id: ID!
+    name: String!
+    released: String!
+    background_image: String!
+  }
+
+  type ApiResult {
+    results: [GameResult]
+    count: Int!
   }
 
   type Review {
