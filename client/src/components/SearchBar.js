@@ -29,13 +29,13 @@ function SearchBar({ search, setSearch, sort, setSort }) {
 
   const handleChange = (event) => {
     const { value } = event.target;
-    setSearchData(value);
+    setSearch(value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     searchGames({
-      variables: { search: searchData.searchValue, sortBy: searchData.sortBy },
+      variables: { search: search, sort: sort},
     });
   };
 
