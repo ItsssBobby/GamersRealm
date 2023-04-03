@@ -20,7 +20,7 @@ As a gamer I want to join a social network that meets my gaming interests so tha
 - gist.md
 
 ## Technology Used
-
+Javascript, HTML, CSS
 <
 ## Contact Us
 
