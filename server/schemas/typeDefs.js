@@ -28,7 +28,8 @@ const typeDefs = gql`
     id: ID!
     name: String!
     released: String!
-    background_image: String!
+    background_image: String
+    rating: Float!
   }
 
   type ApiResult {

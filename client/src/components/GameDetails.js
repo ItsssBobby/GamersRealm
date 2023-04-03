@@ -1,42 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { getGameScreenshot, getUserReviews } from '../rawgApi';
+import React from 'react';
+import { useQuery } from '@apollo/client';
+import { useParams } from 'react-router-dom';
+import { GET_GAME_DETAILS, GET_GAME_SCREENSHOT, GET_USER_REVIEWS } from '../graphql/queries';
 
 function GameDetails() {
-  const location = useLocation();
-  const gameDetails = location.state.gameDetails;
-  const [screenshots, setScreenshots] = useState([]);
-  const [reviews, setReviews] = useState([]);
-  const [platforms, setPlatforms] = useState([]);
-  const [developers, setDevelopers] = useState([]);
-  const [publishers, setPublishers] = useState([]);
+  const { id } = useParams();
+  const { loading, error, data } = useQuery(GET_GAME_DETAILS, {
+    variables: { id },
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const screenshotsData = await getGameScreenshot(gameDetails.id);
-      setScreenshots(screenshotsData.results);
+  const { loading: screenshotLoading, error: screenshotError, data: screenshotData } = useQuery(GET_GAME_SCREENSHOT, {
+    variables: { id },
+  });
 
-      const reviewsData = await getUserReviews(gameDetails.user_reviews_info[0].user.id);
-      setReviews(reviewsData);
+  const { loading: reviewLoading, error: reviewError, data: reviewData } = useQuery(GET_USER_REVIEWS, {
+    variables: { userId: data?.game?.user_reviews_info[0]?.user?.id },
+  });
 
-      const platformsData = gameDetails.platforms.map((platform) => platform.platform);
-      setPlatforms(platformsData);
-
-      const developersData = gameDetails.developers;
-      setDevelopers(developersData);
-
-      const publishersData = gameDetails.publishers;
-      setPublishers(publishersData);
-    };
-
-    if (gameDetails) {
-      fetchData();
-    }
-  }, [gameDetails]);
-
-  if (!gameDetails) {
+  if (loading || screenshotLoading || reviewLoading) {
     return <div>Loading...</div>;
   }
+
+  if (error || screenshotError || reviewError) {
+    return <div>Error occurred: {error?.message || screenshotError?.message || reviewError?.message}</div>;
+  }
+
+  const gameDetails = data.game;
+  const screenshots = screenshotData.gameScreenshots.results;
+  const reviews = reviewData.userReviews;
+
+  const platforms = gameDetails.platforms.map((platform) => platform.platform);
+  const developers = gameDetails.developers;
+  const publishers = gameDetails.publishers;
 
   return (
     <div>

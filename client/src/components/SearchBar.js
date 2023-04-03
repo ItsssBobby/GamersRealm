@@ -1,55 +1,67 @@
-import React, { useEffect, useState } from 'react';
-import { getGames, getGameDetails } from '../rawgApi';
-import { Link, Route, useHistory } from 'react-router-dom';
-import GameDetails from './GameDetails';
-import "../index.css"
+import React, { useEffect, useState } from "react";
+import { useLazyQuery } from "@apollo/client";
+import { Link, Route, useHistory } from "react-router-dom";
+import GameDetails from "./GameDetails";
+import { GET_GAMES, GET_GAME_DETAILS } from "../graphql/queries";
 
-function SearchBar({ search, setSearch }) {
-  const [searchData, setSearchData] = useState({ searchValue: "", sortBy: "rating" });
+function SearchBar({ search, setSearch, sort, setSort }) {
+  // const [searchData, setSearchData] = useState({
+  //   searchValue: "",
+  //   sortBy: "rating",
+  // });
   const [games, setGames] = useState([]);
+  const [searchGames, { data: gamesData }] = useLazyQuery(GET_GAMES);
+  const [getGame, { data: gameData }] = useLazyQuery(GET_GAME_DETAILS);
   const history = useHistory();
 
   useEffect(() => {
-    searchGames(searchData.searchValue, searchData.sortBy);
-  }, [searchData]);
+    if (gamesData && gamesData.games) {
+      setGames(gamesData.games);
+    }
+  }, [gamesData]);
+
+  useEffect(() => {
+    if (gameData && gameData.game) {
+      const { id, ...gameDetails } = gameData.game;
+      history.push(`/game/${id}`, { gameDetails });
+    }
+  }, [gameData]);
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setSearchData({ ...searchData, [name]: value });
+    const { value } = event.target;
+    setSearchData(value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    searchGames(searchData.searchValue, searchData.sortBy);
+    searchGames({
+      variables: { search: searchData.searchValue, sortBy: searchData.sortBy },
+    });
   };
 
-  const searchGames = async (search, sortBy) => {
-    const data = await getGames(search, sortBy);
-    setGames(data);
-  };
-
-  const handleGameClick = async (id) => {
-    const data = await getGameDetails(id);
-    history.push(`/game/${id}`, { gameDetails: data });
+  const handleGameClick = (id) => {
+    getGame({ variables: { id } });
   };
 
   // adding styling to searchbar
-  
 
   return (
-    
     <div>
       <form onSubmit={handleSubmit}>
         <div className="SearchBar h-10 flex justify-center bg-[#a9afb2]">
-          <input className='bg-[#a9afb2] px-2 placeholder-black'
+          <input
+            className="bg-[#a9afb2] px-2 placeholder-black"
             type="text"
-            value={searchData.searchValue}
+            value={search}
             name="searchValue"
             onChange={handleChange}
             placeholder="Search games"
-           
           />
-        <select className="sortBy bg-[#a9afb2]" value={searchData.sortBy} onChange={handleChange}>
+          <select
+            className="sortBy bg-[#a9afb2]"
+            value={sort}
+            onChange={(e)=> setSort(e.target.value)}
+          >
             <option value="rating">Rating</option>
             <option value="released">Release Date</option>
             <option value="added">Date Added</option>
@@ -62,27 +74,23 @@ function SearchBar({ search, setSearch }) {
         </div>
       </form>
       {/* add styling to pop out for games */}
-      <container>
-      <div className="game-list">
-        {games.map((game) => (
-          <div key={game.id}>
-      
-            <h2>
-              <Link to={`/game/${game.id}`} onClick={() => handleGameClick(game.id)}>
-                {game.name}
+      {/* <div>
+        <div className="game-list">
+          {games.map((game) => (
+            <div key={game.id}>
+              <Link to={`/game/${game.id}`}>
+                <h2>{game.name}</h2>
               </Link>
-            </h2>
-            <p>Rating: {game.rating}</p>
-            <p>Release Date: {game.released}</p>
-            <p>Metacritic Score: {game.metacritic}</p>
-          </div>
-        ))}
-      </div>
-      </container>
-      <Route path="/game/:id" component={GameDetails} />
+
+              <p>Rating: {game.rating}</p>
+              <p>Release Date: {game.released}</p>
+              <p>Metacritic Score: {game.metacritic}</p>
+            </div>
+          ))}
+        </div>
+      </div> */}
     </div>
   );
 }
-
 
 export default SearchBar;

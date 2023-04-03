@@ -5,7 +5,7 @@ export const GET_GAMES = gql`
     games(search: $search, sort: $sort) {
       id
       name
-      backgroundImage
+      background_image
       rating
     }
   }
@@ -16,7 +16,7 @@ export const GET_GAME_DETAILS = gql`
     game(id: $id) {
       id
       name
-      backgroundImage
+      background_image
       rating
       released
       website
@@ -37,6 +37,11 @@ export const GET_GAME_DETAILS = gql`
         id
         name
       }
+      user_reviews_info {
+        user {
+          id
+        }
+      }
     }
   }
 `;
@@ -46,19 +51,50 @@ export const GET_REVIEWS = gql`
     reviews(gameId: $gameId) {
       id
       title
-      body
-      rating
-      author {
+      text
+      score
+      user {
         id
         username
       }
       comments {
         id
-        body
-        author {
+        text
+        user {
           id
           username
         }
+      }
+    }
+  }
+`;
+
+
+export const GET_GAME_SCREENSHOT = gql`
+  query GetGameScreenshot($id: ID!) {
+    game(id: $id) {
+      id
+      name
+      screenshots {
+        results {
+          id
+          image
+        }
+      }
+    }
+  }
+`;
+
+export const GET_USER_REVIEWS = gql`
+  query GetUserReviews($userId: ID!) {
+    userReviews(userId: $userId) {
+      id
+      title
+      body
+      rating
+      game {
+        id
+        name
       }
     }
   }

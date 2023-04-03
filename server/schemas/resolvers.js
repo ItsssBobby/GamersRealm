@@ -208,10 +208,6 @@ const resolvers = {
     id(game) {
       return game.id.toString();
     },
-
-    background_image(game) {
-      return game.background_image.replace("media/", "");
-    },
   },
 
   ApiResult: {

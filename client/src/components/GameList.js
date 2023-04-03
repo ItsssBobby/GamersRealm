@@ -3,9 +3,9 @@ import { useQuery } from '@apollo/client';
 import { GET_GAMES } from '../graphql/queries';
 import Game from './Game';
 
-function GameList({ search, sortBy }) {
+function GameList({ search, sort }) {
   const { loading, error, data } = useQuery(GET_GAMES, {
-    variables: { search, sortBy },
+    variables: { search, sort },
   });
 
   if (loading) return <p>Loading...</p>;
