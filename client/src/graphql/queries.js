@@ -12,38 +12,31 @@ export const GET_GAMES = gql`
 `;
 
 export const GET_GAME_DETAILS = gql`
-  query GetGameDetails($id: ID!) {
-    game(id: $id) {
-      id
-      name
-      background_image
-      rating
-      released
-      website
-      description
-      genres {
+query Game($gameId: ID!) {
+  game(id: $gameId) {
+    id
+    name
+    released
+    background_image
+    rating
+    website
+    description
+    userReviews {
+      _id
+      title
+    }
+    platforms {
+      platform {
         id
         name
-      }
-      platforms {
-        id
-        name
-      }
-      developers {
-        id
-        name
-      }
-      publishers {
-        id
-        name
-      }
-      user_reviews_info {
-        user {
-          id
-        }
       }
     }
+    publishers {
+      id
+      name
+    }
   }
+}
 `;
 
 export const GET_REVIEWS = gql`

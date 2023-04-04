@@ -5,7 +5,7 @@ const typeDefs = gql`
 
   type Query {
     games(search: String, sort: String): [GameResult]
-    game(id: ID!): Game
+    game(id: ID!): GameResult
     userReviews(userId: ID!): [Review]
     reviews: [Review]
     review(id: ID!): Review
@@ -30,6 +30,26 @@ const typeDefs = gql`
     released: String!
     background_image: String
     rating: Float!
+    website: String
+    description: String
+    userReviews: [Review]!
+    platforms: [Platforms]!
+    publishers: [Publisher]!
+  }
+  
+  type Platforms {
+    platform: Platform
+  }
+
+
+  type Platform {
+    id: ID
+    name: String
+  }
+
+  type Publisher {
+    id: ID
+    name: String
   }
 
   type ApiResult {
@@ -43,7 +63,8 @@ const typeDefs = gql`
     body: String!
     rating: Int!
     user: User!
-    game: Game!
+    gameId: ID!
+    game: String
     comments: [Comment]
     createdAt: Date!
     updatedAt: Date!

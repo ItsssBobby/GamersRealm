@@ -13,9 +13,8 @@ const reviewSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  game: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Game',
+  gameId: {
+    type: mongoose.Schema.Types.Mixed,
     required: true,
   },
   author: {
