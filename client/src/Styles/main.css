@@ -130,6 +130,13 @@ header .nav-btn {
     }
 
 
-
+.game-list{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: baseline;
+    viewport-fit: auto;
+}
 
 
