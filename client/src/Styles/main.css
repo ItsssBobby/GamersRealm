@@ -5,48 +5,47 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
 
 
-*{
-    background: rgb(169, 175, 178);
+* {
+    /* background: rgb(169, 175, 178); */
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
 
-:root{
-    
-    --mainColor:#171717;
-    --mainColorLight:#444444;
-    --secondaryColor:#DA0037;
-    --textColor:#EDEDED;
+:root {
+
+    --mainColor: #171717;
+    --mainColorLight: #3f3f3f;
+    --secondaryColor: #DA0037;
+    --textColor: #EDEDED;
 }
 
-header{
+header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 80px;
     padding: 0 2rem;
     background-color: var(--mainColor);
-    color:var(--textColor);
+    color: var(--textColor);
 }
 
-nav a{
+nav a {
     margin: 0 2rem;
     color: var(--textColor);
     background-color: var(--mainColor);
     text-decoration: none;
 }
 
-nav a:hover{
+nav a:hover {
     color: var(--secondaryColor);
-    
+
 }
 
 header .nav-btn {
     padding: 5px;
     cursor: pointer;
-    background: transparent;
     border: none;
     outline: none;
     color: var(--textColor);
@@ -55,13 +54,13 @@ header .nav-btn {
     font-size: 1.8rem;
 }
 
-@media only screen and (max-width: 1024px){
+@media only screen and (max-width: 1024px) {
     header .nav-btn {
         visibility: visible;
         opacity: 1;
     }
 
-    header nav{
+    header nav {
         position: fixed;
         top: 0;
         left: 0;
@@ -72,22 +71,65 @@ header .nav-btn {
         align-items: center;
         justify-content: center;
         gap: 1.5rem;
-        background-color: var(--mainColor);
+        background-color: var(--mainColorLight);
         transition: 1s;
         transform: translateY(-100vh);
     }
 
-    header .responsive_nav{
+    header .responsive_nav {
         transform: none;
+        background-color: var(--mainColorLight);
     }
 
-    nav .nav-close-btn{
+    nav .nav-close-btn {
         position: absolute;
         top: 2rem;
         right: 2rem;
     }
 
-    nav a{
+    nav a {
         font-size: 1.5rem;
+        background-color: var(--maincolorLight);
     }
 }
+
+.register-form, .login-form {
+    max-width: 500px;
+    /* text-align: center; */
+    margin: 2.5rem auto;
+    border: 2px solid var(--secondaryColor);
+    padding: 2rem;
+}
+
+    label {
+        display: block;
+    }
+
+    input, textarea {
+        display: block;
+        width: 100%;
+    }
+
+#registerBtn, #loginBtn{
+    border: 0;
+    background-color: var(--secondaryColor);
+    padding: .5rem;
+    color: var(--textColor);
+    margin: 1rem 0;
+    width: auto;
+    text-transform: uppercase;
+}
+
+#registerHereBtn{
+    background-color: var(--mainColorLight);
+}
+
+#registerBtn:hover, #loginBtn:hover, #registerHereBtn {
+        background-color: var(--mainColorLight);
+        transition: .25s;
+    }
+
+
+
+
+

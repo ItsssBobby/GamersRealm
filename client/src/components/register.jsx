@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import "../Styles/main.css";
 
 export const Register = () => {
   const [email, setEmail] = useState(" ");
@@ -29,35 +30,32 @@ export const Register = () => {
   };
 
   return (
-    <form className="SearchBar h-10 flex justify-center bg-[#a9afb2]" onSubmit={handleSubmit}>
-      <label htmlFor="name">Full Name</label>
-      <input className="bg-[#a9afb2] px-3 placeholder-black"
-        type="text"
-        id="name"
-        name="name"
-        value={name}
-        onChange={handleNameChange}
-        placeholder="Full Name"
-      />
-      <label className="bg-[#a9afb2]" htmlFor="email">Email</label>
-      <input className="bg-[#a9afb2] px-3 placeholder-black"
-        type="email"
-        id="email"
-        name="email"
-        value={email}
-        onChange={handleEmailChange}
-        placeholder="you@example.com"
-      />
-      <label className="bg-[#a9afb2]" htmlFor="password">Password</label>
-      <input className="bg-[#a9afb2]  px-3 placeholder-black"
-        type="password"
-        id="password"
-        name="password"
-        value={password}
-        onChange={handlePasswordChange}
-        placeholder="********"
-      />
-      <button className="bg-[#a9afb2]" type="submit">Register</button>
-    </form>
+   <><form className="SearchBar register-form" onSubmit={handleSubmit}>
+      <div className="mb-3 row">
+        <label htmlFor="name" className="col-sm-2 col-form-label">Full Name</label>
+        <div className="col-sm-10">
+          <input type="text" name="name" className="form-control-plaintext" id="name" value={name} onChange={handleNameChange} placeholder="John Doe" />
+        </div>
+      </div>
+
+      <div className="mb-3 row">
+        <label htmlFor="email" className="col-sm-2 col-form-label">Email</label>
+        <div className="col-sm-10">
+          <input type="email" className="form-control-plaintext" id="email" value={email} onChange={handleEmailChange} placeholder="you@example.com" />
+        </div>
+      </div>
+
+      <div className="mb-3 row">
+        <label htmlFor="password" className="col-sm-2 col-form-label">Password</label>
+        <div className="col-sm-10">
+          <input type="password" className="form-control" id="password" value={password} onChange={handlePasswordChange} placeholder="*******" />
+        </div>
+
+        <div>
+          <button type="submit" className="btn btn-primary" id="registerBtn">Register</button>
+        </div>
+        
+      </div>
+    </form></>
   );
 };

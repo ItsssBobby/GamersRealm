@@ -11,8 +11,8 @@ function Navbar () {
 
     return (
         <header>
-            <h1 className='bg-black'>Gamers Realm</h1>
-            <nav className='bg-black' ref={navRef}>
+            <h1>Gamers Realm</h1>
+            <nav ref={navRef}>
                 <a href = '/#'>Home</a>
                 <a href = '/register'>Signup</a>
                 <a href = '/login'>Login</a>
