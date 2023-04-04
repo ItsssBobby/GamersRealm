@@ -2,7 +2,7 @@ const { GraphQLScalarType } = require("graphql");
 const { Kind } = require("graphql/language");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { User, Game, Review, Comment } = require("../models");
+const { User, Review, Comment } = require("../models");
 const axios = require("axios");
 require("dotenv").config();
 
@@ -12,34 +12,36 @@ const resolvers = {
   Query: {
     async games(_, { search, sort }) {
       const response = await axios.get(
-        `${RAWG_API_BASE_URL}/games?search=${search}&ordering=${sort}&key=${process.env.RAWG_API_KEY}`,
-        { mode: "cors" }
+        `${RAWG_API_BASE_URL}/games?search=${search}&ordering=${sort}&key=${process.env.RAWG_API_KEY}`
       );
       return response.data.results;
     },
 
     async game(_, { id }) {
       const response = await axios.get(
-        `${RAWG_API_BASE_URL}/games/${id}?key=${process.env.RAWG_API_KEY}`,
-        { mode: "cors" }
+        `${RAWG_API_BASE_URL}/games/${id}?key=${process.env.RAWG_API_KEY}`
       );
-      return response.data;
+
+      const userReviews = await Review.find({gameId: id})
+      return {
+        ...response.data,
+        userReviews
+      }
     },
 
     async userReviews(_, { userId }) {
       const response = await axios.get(
-        `${RAWG_API_BASE_URL}/users/${userId}/reviews?key=${process.env.RAWG_API_KEY}`,
-        { mode: "cors" }
+        `${RAWG_API_BASE_URL}/users/${userId}/reviews?key=${process.env.RAWG_API_KEY}`
       );
       return response.data.results;
     },
 
     async reviews() {
-      return Review.find().populate("game");
+      return Review.find();
     },
 
     async review(_, { id }) {
-      return Review.findById(id).populate("game");
+      return Review.findById(id);
     },
 
     async rawgApi(_, { game }) {
@@ -61,14 +63,14 @@ const resolvers = {
         body,
         rating,
         user: currentUser._id,
-        game: gameId,
+        gameId: gameId,
       });
 
       await User.findByIdAndUpdate(currentUser._id, {
         $addToSet: { reviews: review._id },
       });
 
-      return review.populate("user").populate("game").execPopulate();
+      return review.populate("user").execPopulate();
     },
 
     async addComment(_, { body, reviewId }, { currentUser }) {
@@ -127,7 +129,7 @@ const resolvers = {
 
   Game: {
     reviews(game) {
-      return Review.find({ game: game._id })
+      return Review.find({ gameId: game._id })
         .populate("user")
         .populate("comments");
     },
@@ -175,7 +177,7 @@ const resolvers = {
 
   User: {
     reviews(user) {
-      return Review.find({ user: user._id }).populate("game");
+      return Review.find({ user: user._id });
     },
 
     createdAt(user) {
