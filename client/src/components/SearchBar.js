@@ -35,7 +35,7 @@ function SearchBar({ search, setSearch, sort, setSort }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     searchGames({
-      variables: { search: search, sort: sort},
+      variables: { search: search, sort: sort },
     });
   };
 
@@ -60,7 +60,7 @@ function SearchBar({ search, setSearch, sort, setSort }) {
           <select
             className="sortBy bg-[#a9afb2]"
             value={sort}
-            onChange={(e)=> setSort(e.target.value)}
+            onChange={(e) => setSort(e.target.value)}
           >
             <option value="rating">Rating</option>
             <option value="released">Release Date</option>

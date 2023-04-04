@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { useHistory } from "react-router-dom";
+// import { props } from " "
 
 export const Login = () =>{
     const [email, setEmail] = useState('');
@@ -41,7 +42,8 @@ export const Login = () =>{
                 <button className="h-10 flex justify-center">Log In</button>
             </form>
             <div className="h-10 flex justify-center bg-[#a9afb2]">
-            <button  onClick={()=> props.onFormSwitch('login')}>Register Here.</button>
+        
+
             </div>
         </>    
     )
