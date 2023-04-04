@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import "../Styles/main.css";
 
 export const Register = () => {
   const [email, setEmail] = useState("");
@@ -29,30 +30,32 @@ export const Register = () => {
   };
 
   return (
-    <form className="SearchBar" onSubmit={handleSubmit}>
-<div className="mb-3 row">
-    <label htmlFor="name" className="col-sm-2 col-form-label">Full Name</label>
-    <div className="col-sm-10">
-      <input type="text" name="name" className="form-control-plaintext" id="name" value={name} onChange={handleNameChange} placeholder="Full Name"></input>
-    </div>
-  </div>
+    <form className="SearchBar register-form" onSubmit={handleSubmit}>
+      <div className="mb-3 row">
+        <label htmlFor="name" className="col-sm-2 col-form-label">Full Name</label>
+        <div className="col-sm-10">
+          <input type="text" name="name" className="form-control-plaintext" id="name" value={name} onChange={handleNameChange} placeholder="John Doe" />
+        </div>
+      </div>
 
-<div className="mb-3 row">
-    <label htmlFor="email" className="col-sm-2 col-form-label">Email</label>
-    <div className="col-sm-10">
-      <input type="email" className="form-control-plaintext" id="email" value={email} onChange={handleEmailChange} placeholder="you@example.com"></input>
-    </div>
-  </div>
+      <div className="mb-3 row">
+        <label htmlFor="email" className="col-sm-2 col-form-label">Email</label>
+        <div className="col-sm-10">
+          <input type="email" className="form-control-plaintext" id="email" value={email} onChange={handleEmailChange} placeholder="you@example.com" />
+        </div>
+      </div>
 
-  <div className="mb-3 row">
-    <label htmlFor="password" className="col-sm-2 col-form-label">Password</label>
-    <div className="col-sm-10">
-      <input type="password" className="form-control" id="password" value={password} onChange={handlePasswordChange} placeholder="*******"></input>
-    </div>
-    <div>
-      <button type="submit" className="btn btn-primary">Register</button>
-    </div>
-  </div>
-  </form>
+      <div className="mb-3 row">
+        <label htmlFor="password" className="col-sm-2 col-form-label">Password</label>
+        <div className="col-sm-10">
+          <input type="password" className="form-control" id="password" value={password} onChange={handlePasswordChange} placeholder="*******" />
+        </div>
+
+        <div>
+          <button type="submit" className="btn btn-primary" id="registerBtn">Register</button>
+        </div>
+        
+      </div>
+    </form>
   );
 };
