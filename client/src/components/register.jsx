@@ -30,7 +30,7 @@ export const Register = () => {
   };
 
   return (
-    <form className="SearchBar register-form" onSubmit={handleSubmit}>
+   <><form className="SearchBar register-form" onSubmit={handleSubmit}>
       <div className="mb-3 row">
         <label htmlFor="name" className="col-sm-2 col-form-label">Full Name</label>
         <div className="col-sm-10">
@@ -56,6 +56,6 @@ export const Register = () => {
         </div>
         
       </div>
-    </form>
+    </form></>
   );
 };
