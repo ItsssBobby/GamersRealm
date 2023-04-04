@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_GAMES } from '../graphql/queries';
 import Game from './Game';
+import "../Styles/main.css";
 
 function GameList({ search, sort }) {
   const { loading, error, data } = useQuery(GET_GAMES, {
@@ -14,11 +15,13 @@ function GameList({ search, sort }) {
   const games = data?.games || [];
 
   return (
+    
     <div className="game-list">
       {games.map((game) => (
         <Game key={game.id} game={game} />
       ))}
     </div>
+    
   );
 }
 
