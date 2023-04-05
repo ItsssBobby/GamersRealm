@@ -12,7 +12,6 @@ function Game({ game }) {
       <p>Rating: {game.rating}</p>
       <p>Release Date: {game.released}</p>
       <p>Metacritic Score: {game.metacritic || "N/A"}</p>
-      <a href={game.website}>Visit Website</a>
     </div>
   );
 }

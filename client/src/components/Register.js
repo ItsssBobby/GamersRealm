@@ -4,7 +4,7 @@ import { useMutation } from "@apollo/client";
 import { ADD_USER } from "../graphql/mutations";
 import "../Styles/main.css";
 
-export const Register = () => {
+function Register(){
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -96,3 +96,5 @@ export const Register = () => {
     </>
   );
 };
+
+export default Register;
