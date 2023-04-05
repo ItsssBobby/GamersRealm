@@ -42,7 +42,7 @@ const client = new ApolloClient({
 
 function App() {
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("rating");
+  const [sort, setSort] = useState("");
 
   return (
     <ApolloProvider client={client}>

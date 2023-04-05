@@ -27,7 +27,7 @@ const typeDefs = gql`
   type GameResult {
     id: ID!
     name: String!
-    released: String!
+    released: String
     background_image: String
     rating: Float!
     website: String
