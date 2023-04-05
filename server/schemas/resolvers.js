@@ -12,7 +12,7 @@ const resolvers = {
   Query: {
     async games(_, { search, sort }) {
       const response = await axios.get(
-        `${RAWG_API_BASE_URL}/games?search=${search}&ordering=${sort}&key=${process.env.RAWG_API_KEY}`
+        `${RAWG_API_BASE_URL}/games?search="${search}"&ordering=-${sort}&key=${process.env.RAWG_API_KEY}`
       );
       return response.data.results;
     },

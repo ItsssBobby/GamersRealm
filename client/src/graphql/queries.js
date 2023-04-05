@@ -1,12 +1,13 @@
 import { gql } from '@apollo/client';
 
 export const GET_GAMES = gql`
-  query GetGames($search: String, $sort: String) {
+  query GetGames($search: String!, $sort: String!) {
     games(search: $search, sort: $sort) {
       id
       name
       background_image
       rating
+      released
     }
   }
 `;
