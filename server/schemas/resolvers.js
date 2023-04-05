@@ -91,7 +91,7 @@ const resolvers = {
       return comment.populate("user").populate("review").execPopulate();
     },
 
-    async signup(_, { username, email, password }) {
+    async addUser(_, { name, email, password }) {
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         throw new Error("User already exists");
@@ -100,7 +100,7 @@ const resolvers = {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       const user = await User.create({
-        username,
+        name,
         email,
         password: hashedPassword,
       });

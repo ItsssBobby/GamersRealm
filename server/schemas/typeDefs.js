@@ -15,7 +15,7 @@ const typeDefs = gql`
   type Mutation {
     addReview(title: String!, body: String!, rating: Int!, gameId: ID!): Review
     addComment(body: String!, reviewId: ID!): Comment
-    signup(username: String!, email: String!, password: String!): AuthPayload
+    addUser(name: String!, email: String!, password: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
   }
 
@@ -81,7 +81,7 @@ const typeDefs = gql`
 
   type User {
     _id: ID!
-    username: String!
+    name: String!
     email: String!
     reviews: [Review]
     createdAt: Date!

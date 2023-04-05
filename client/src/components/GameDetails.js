@@ -1,7 +1,8 @@
-import React from 'react';
-import { useQuery } from '@apollo/client';
-import { useParams } from 'react-router-dom';
-import { GET_GAME_DETAILS, GET_USER_REVIEWS } from '../graphql/queries';
+import React, { useState } from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { useParams } from "react-router-dom";
+import { GET_GAME_DETAILS, GET_USER_REVIEWS } from "../graphql/queries";
+import { ADD_REVIEW, ADD_COMMENT } from "../graphql/mutations";
 
 function GameDetails() {
   const { id } = useParams();
@@ -10,17 +11,83 @@ function GameDetails() {
   });
 
   const userId = data?.game?.userReviews[0]?.userId;
-  const { loading: reviewLoading, error: reviewError, data: reviewData } = useQuery(GET_USER_REVIEWS, {
+  const [addReview, { loading: addReviewLoading, error: addReviewError }] =
+    useMutation(ADD_REVIEW);
+  const [addComment, { loading: addCommentLoading, error: addCommentError }] =
+    useMutation(ADD_COMMENT);
+
+  const {
+    loading: reviewLoading,
+    error: reviewError,
+    data: reviewData,
+  } = useQuery(GET_USER_REVIEWS, {
     variables: { userId },
     skip: !userId,
   });
 
-  if (loading || (reviewLoading && userId)) {
+  const [reviewTitle, setReviewTitle] = useState("");
+  const [reviewBody, setReviewBody] = useState("");
+  const [reviewRating, setReviewRating] = useState(1);
+
+  const [commentBody, setCommentBody] = useState("");
+
+  const handleSubmitReview = (event) => {
+    event.preventDefault();
+    addReview({
+      variables: {
+        title: reviewTitle,
+        body: reviewBody,
+        rating: reviewRating,
+        gameId: id,
+      },
+      refetchQueries: [
+        {
+          query: GET_USER_REVIEWS,
+          variables: { userId },
+        },
+      ],
+    });
+    setReviewTitle("");
+    setReviewBody("");
+    setReviewRating(1);
+  };
+
+  const handleSubmitComment = (event, reviewId) => {
+    event.preventDefault();
+    addComment({
+      variables: {
+        body: commentBody,
+        reviewId: reviewId,
+      },
+      refetchQueries: [
+        {
+          query: GET_USER_REVIEWS,
+          variables: { userId },
+        },
+      ],
+    });
+    setCommentBody("");
+  };
+
+  if (
+    loading ||
+    (reviewLoading && userId) ||
+    addReviewLoading ||
+    addCommentLoading
+  ) {
     return <div>Loading...</div>;
   }
 
-  if (error || reviewError) {
-    return <div>Error occurred: {error?.message || reviewError?.message}</div>;
+  if (error || reviewError || addReviewError || addCommentError) {
+    return (
+      <div>
+        Error occurred:{" "}
+        {error?.message ||
+          reviewError?.message ||
+          addReviewError?.message ||
+          addCommentError?.message}
+      </div>
+    );
   }
 
   const gameDetails = data.game;
@@ -36,21 +103,89 @@ function GameDetails() {
       <h2>Details</h2>
       <p>Released: {gameDetails.released}</p>
       <p>Rating: {gameDetails.rating}</p>
-      <p>Website: <a href={gameDetails.website}>{gameDetails.website}</a></p>
+      <p>
+        Website: <a href={gameDetails.website}>{gameDetails.website}</a>
+      </p>
       <p>Description:</p>
       <div dangerouslySetInnerHTML={{ __html: gameDetails.description }} />
       <p>Platforms: {platforms.map((platform) => platform.name).join(", ")}</p>
-      <p>Publishers: {publishers.map((publisher) => publisher.name).join(", ")}</p>
+      <p>
+        Publishers: {publishers.map((publisher) => publisher.name).join(", ")}
+      </p>
       <h2>User Reviews</h2>
       <div className="reviews">
-        {reviews && reviews.map((review) => (
-          <div key={review.id}>
-            <p>{review.title}</p>
-            <p>{review.body}</p>
-            <p>Rating: {review.rating}</p>
-          </div>
-        ))}
+        {reviews &&
+          reviews.map((review) => (
+            <div key={review.id}>
+              <p>{review.title}</p>
+              <p>{review.body}</p>
+              <p>Rating: {review.rating}</p>
+              <h3>Comments</h3>
+              <div className="comments">
+                {review.comments &&
+                  review.comments.map((comment) => (
+                    <div key={comment.id}>
+                      <p>{comment.body}</p>
+                      <p>By {comment.user.username}</p>
+                    </div>
+                  ))}
+                {userId && (
+                  <form
+                    onSubmit={(event) => handleSubmitComment(event, review.id)}
+                  >
+                    <label>
+                      Leave a comment:
+                      <input
+                        type="text"
+                        value={commentBody}
+                        onChange={(event) => setCommentBody(event.target.value)}
+                      />
+                    </label>
+                    <button type="submit">Submit</button>
+                  </form>
+                )}
+              </div>
+            </div>
+          ))}
       </div>
+      {userId && (
+        <div>
+          <h3>Leave a Review</h3>
+          <form onSubmit={handleSubmitReview}>
+            <label>
+              Title:
+              <input
+                type="text"
+                value={reviewTitle}
+                onChange={(event) => setReviewTitle(event.target.value)}
+              />
+            </label>
+            <label>
+              Body:
+              <textarea
+                value={reviewBody}
+                onChange={(event) => setReviewBody(event.target.value)}
+              />
+            </label>
+            <label>
+              Rating:
+              <select
+                value={reviewRating}
+                onChange={(event) =>
+                  setReviewRating(parseInt(event.target.value))
+                }
+              >
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
+                <option value={4}>4</option>
+                <option value={5}>5</option>
+              </select>
+            </label>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      )}
     </div>
   );
 }
