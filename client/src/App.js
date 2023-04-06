@@ -49,10 +49,10 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" component={Homescreen} />
-          <Route path="/register" component={Register} />
-          <Route path="/login" component={Login} />
-          <Route path="/game/:id" component={GameDetails} />
+          <Route path="/" element={Homescreen} />
+          <Route path="/register" element={Register} />
+          <Route path="/login" element={Login} />
+          <Route path="/game/:id" element={GameDetails} />
           {/* <Route component={NotFound} /> */}
         </Routes>
       </Router>

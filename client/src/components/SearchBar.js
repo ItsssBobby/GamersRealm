@@ -96,4 +96,4 @@ function SearchBar({ search, setSearch, sort, setSort }) {
   );
 }
 
-export default SearchBar;
+export default <SearchBar />;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import "../Styles/main.css"
 
 function Login() {
@@ -55,4 +55,4 @@ function Login() {
     );
 };
 
-export default Login;
+export default <Login />;

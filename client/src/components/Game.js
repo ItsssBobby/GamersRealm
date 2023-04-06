@@ -16,4 +16,4 @@ function Game({ game }) {
   );
 }
 
-export default Game;
+export default <Game />;

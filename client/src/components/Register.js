@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { ADD_USER } from "../graphql/mutations";
 import "../Styles/main.css";
@@ -97,4 +97,4 @@ function Register(){
   );
 };
 
-export default Register;
+export default <Register />;

@@ -22,4 +22,4 @@ function GameList({ search, sort }) {
   );
 }
 
-export default GameList;
+export default <GameList />;
