@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLazyQuery } from "@apollo/client";
-import { Link, Route, useHistory } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import GameDetails from "./GameDetails";
 import { GET_GAMES, GET_GAME_DETAILS } from "../graphql/queries";
 
@@ -12,7 +12,7 @@ function SearchBar({ search, setSearch, sort, setSort }) {
   const [games, setGames] = useState([]);
   const [searchGames, { data: gamesData }] = useLazyQuery(GET_GAMES);
   const [getGame, { data: gameData }] = useLazyQuery(GET_GAME_DETAILS);
-  const history = useHistory();
+
 
   useEffect(() => {
     if (gamesData && gamesData.games) {
@@ -23,7 +23,7 @@ function SearchBar({ search, setSearch, sort, setSort }) {
   useEffect(() => {
     if (gameData && gameData.game) {
       const { id, ...gameDetails } = gameData.game;
-      history.push(`/game/${id}`, { gameDetails });
+      navigate(`/game/${id}`, { gameDetails });
     }
   }, [gameData]);
 

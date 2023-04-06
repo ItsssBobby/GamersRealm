@@ -13,7 +13,7 @@ function Navbar () {
         <header>
             <h1>Gamers Realm</h1>
             <nav ref={navRef}>
-                <a href = '/#'>Home</a>
+                <a href = '/'>Home</a>
                 <a href = '/register'>Signup</a>
                 <a href = '/login'>Login</a>
                 <button className='nav-btn nav-close-btn' onClick={showNavbar}>

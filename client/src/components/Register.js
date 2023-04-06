@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { ADD_USER } from "../graphql/mutations";
 import "../Styles/main.css";
@@ -8,7 +8,7 @@ function Register(){
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const history = useHistory();
+  let navigate = useNavigate()
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -24,7 +24,7 @@ function Register(){
 
   const [addUser, { loading, error }] = useMutation(ADD_USER, {
     onCompleted: () => {
-      history.push("/");
+      navigate("/");
     },
   });
 
@@ -97,4 +97,4 @@ function Register(){
   );
 };
 
-export default Register;
+export default <Register />;
