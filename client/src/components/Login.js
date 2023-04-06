@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import "../Styles/main.css"
 
-export const Login = () => {
+function Login() {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const history = useHistory()
@@ -54,3 +54,5 @@ export const Login = () => {
 
     );
 };
+
+export default Login;
