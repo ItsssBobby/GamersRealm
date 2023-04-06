@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import {
   ApolloProvider,
   ApolloClient,
@@ -12,7 +12,7 @@ import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import GameList from "./components/GameList";
-
+import Homescreen from "./components/Homescreen";
 import "./index.css";
 import GameDetails from "./components/GameDetails";
 
@@ -48,16 +48,13 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <Navbar />
-        <Switch>
-          <Route exact path="/">
-            <SearchBar search={search} setSearch={setSearch} sort={sort} setSort={setSort} />
-            <GameList search={search} sort={sort} />
-          </Route>
+        <Routes>
+          <Route path="/" component={Homescreen} />
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
           <Route path="/game/:id" component={GameDetails} />
           {/* <Route component={NotFound} /> */}
-        </Switch>
+        </Routes>
       </Router>
     </ApolloProvider>
   );

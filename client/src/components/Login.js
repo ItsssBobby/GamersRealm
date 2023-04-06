@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import "../Styles/main.css"
 
 function Login() {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
-    const history = useHistory()
+    let navigate = useNavigate()
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -18,7 +18,7 @@ function Login() {
     const handleSubmit = (e) => {
         email.preventDefault();
         console.log(email);
-        history.push("/");
+        navigate("/");
     };
 
     return (
