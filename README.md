@@ -25,6 +25,8 @@ As a gamer I want to join a social network that meets my gaming interests So Tha
 
 [Power Point](https://docs.google.com/presentation/d/1ilPCi9F2NV3fMkJfMpcmsGGvh4QF_e522zxRSEIP_qw/edit?usp=sharing)
 
+[Deployed](https://gamersrealm.herokuapp.com/)
+
 ## Technology Used
 
 Javascript, HTML, Markdown, React, CSS, JSON, Graphql, and Github
@@ -39,3 +41,5 @@ For any quesitons, concerns, or modification request contact us at:
 ## License
 
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/RussC22/StrapDown.js/blob/master/LICENSE)
+
+![gamersrealm](https://user-images.githubusercontent.com/114114167/230664361-8d838cc5-d0e6-44c4-88df-f618a0cb00dc.jpg)
