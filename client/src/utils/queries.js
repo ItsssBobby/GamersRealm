@@ -49,14 +49,14 @@ export const GET_REVIEWS = gql`
       score
       user {
         id
-        username
+        name
       }
       comments {
         id
         text
         user {
           id
-          username
+          name
         }
       }
     }
@@ -80,14 +80,39 @@ export const GET_GAME_SCREENSHOT = gql`
 `;
 
 export const GET_USER_REVIEWS = gql`
-  query GetUserReviews($userId: ID!) {
+  query getUserReviews($userId: ID!) {
     userReviews(userId: $userId) {
-      id
+      _id
       title
       body
       rating
+      createdAt
       game {
-        id
+        _id
+        name
+        background_image
+        released
+        rating
+        website
+        description
+        platforms {
+          platform {
+            name
+          }
+        }
+        publishers {
+          name
+        }
+      }
+      comments {
+        _id
+        body
+        createdAt
+        user {
+          name
+        }
+      }
+      user {
         name
       }
     }

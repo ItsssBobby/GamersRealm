@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import { GET_GAMES } from '../graphql/queries';
+import { GET_GAMES } from '../utils/queries';
 import Game from './Game';
 
 function GameList({ search, sort }) {

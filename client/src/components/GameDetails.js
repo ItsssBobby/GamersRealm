@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useParams } from "react-router-dom";
-import { GET_GAME_DETAILS, GET_USER_REVIEWS } from "../graphql/queries";
-import { ADD_REVIEW, ADD_COMMENT } from "../graphql/mutations";
+import { GET_GAME_DETAILS, GET_USER_REVIEWS } from "../utils/queries";
+import { ADD_REVIEW, ADD_COMMENT } from "../utils/mutations";
+import AuthService from "../utils/auth";
 
 function GameDetails() {
   const { id } = useParams();
@@ -10,11 +11,12 @@ function GameDetails() {
     variables: { gameId: id },
   });
 
-  const userId = data?.game?.userReviews[0]?.userId;
   const [addReview, { loading: addReviewLoading, error: addReviewError }] =
     useMutation(ADD_REVIEW);
   const [addComment, { loading: addCommentLoading, error: addCommentError }] =
     useMutation(ADD_COMMENT);
+
+  const userId = data?.game?.userReviews[0]?.userId;
 
   const {
     loading: reviewLoading,
@@ -96,6 +98,8 @@ function GameDetails() {
   const platforms = gameDetails.platforms.map((platform) => platform.platform);
   const publishers = gameDetails.publishers;
 
+  const isLoggedIn = AuthService.loggedIn();
+
   return (
     <div>
       <h1>{gameDetails.name}</h1>
@@ -109,85 +113,53 @@ function GameDetails() {
       <p>Description:</p>
       <div dangerouslySetInnerHTML={{ __html: gameDetails.description }} />
       <p>Platforms: {platforms.map((platform) => platform.name).join(", ")}</p>
-      <p>
-        Publishers: {publishers.map((publisher) => publisher.name).join(", ")}
-      </p>
-      <h2>User Reviews</h2>
-      <div className="reviews">
-        {reviews &&
-          reviews.map((review) => (
-            <div key={review.id}>
-              <p>{review.title}</p>
-              <p>{review.body}</p>
-              <p>Rating: {review.rating}</p>
-              <h3>Comments</h3>
-              <div className="comments">
-                {review.comments &&
-                  review.comments.map((comment) => (
-                    <div key={comment.id}>
-                      <p>{comment.body}</p>
-                      <p>By {comment.user.username}</p>
-                    </div>
-                  ))}
-                {userId && (
-                  <form
-                    onSubmit={(event) => handleSubmitComment(event, review.id)}
-                  >
-                    <label>
-                      Leave a comment:
-                      <input
-                        type="text"
-                        value={commentBody}
-                        onChange={(event) => setCommentBody(event.target.value)}
-                      />
-                    </label>
-                    <button type="submit">Submit</button>
-                  </form>
-                )}
-              </div>
-            </div>
-          ))}
-      </div>
-      {userId && (
-        <div>
-          <h3>Leave a Review</h3>
-          <form onSubmit={handleSubmitReview}>
-            <label>
-              Title:
-              <input
-                type="text"
-                value={reviewTitle}
-                onChange={(event) => setReviewTitle(event.target.value)}
-              />
-            </label>
-            <label>
-              Body:
-              <textarea
-                value={reviewBody}
-                onChange={(event) => setReviewBody(event.target.value)}
-              />
-            </label>
-            <label>
-              Rating:
-              <select
-                value={reviewRating}
-                onChange={(event) =>
-                  setReviewRating(parseInt(event.target.value))
-                }
-              >
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-                <option value={3}>3</option>
-                <option value={4}>4</option>
-                <option value={5}>5</option>
-              </select>
-            </label>
-            <button type="submit">Submit</button>
-          </form>
-        </div>
-      )}
+      {isLoggedIn && (
+    <div>
+      <h3>Leave a Review</h3>
+      <form onSubmit={handleSubmitReview}>
+        <label>
+          Title:
+          <input
+            type="text"
+            value={reviewTitle}
+            onChange={(event) => setReviewTitle(event.target.value)}
+          />
+        </label>
+        <label>
+          Body:
+          <textarea
+            value={reviewBody}
+            onChange={(event) => setReviewBody(event.target.value)}
+          />
+        </label>
+        <label>
+          Rating:
+          <select
+            value={reviewRating}
+            onChange={(event) =>
+              setReviewRating(parseInt(event.target.value))
+            }
+          >
+            <option value={1}>1</option>
+            <option value={2}>2</option>
+            <option value={3}>3</option>
+            <option value={4}>4</option>
+            <option value={5}>5</option>
+          </select>
+        </label>
+        <button type="submit">Submit</button>
+      </form>
     </div>
-  );
+  )}
+  {!isLoggedIn && (
+    <div>
+      <p>
+        To leave a review, please <Link to="/login">log in</Link>.
+      </p>
+    </div>
+  )}
+</div>
+);
 }
 
 export default <GameDetails />;

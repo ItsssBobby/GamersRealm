@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { GET_USER } from "../graphql/queries";
+import { GET_USER } from "../utils/queries";
 
 const User = () => {
   const { id } = useParams();
@@ -12,7 +12,7 @@ const User = () => {
 
   return (
     <div>
-      <h2>{data.user.username}</h2>
+      <h2>{data.user.name}</h2>
       <p>Name: {data.user.name}</p>
       <p>Email: {data.user.email}</p>
     </div>
