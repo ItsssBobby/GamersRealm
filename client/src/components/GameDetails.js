@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { GET_GAME_DETAILS, GET_USER_REVIEWS } from "../utils/queries";
 import { ADD_REVIEW, ADD_COMMENT } from "../utils/mutations";
 import AuthService from "../utils/auth";
@@ -154,7 +154,7 @@ function GameDetails() {
   {!isLoggedIn && (
     <div>
       <p>
-        To leave a review, please <Link to="/login">log in</Link>.
+        To leave a review, please <Link to='/login'>log in</Link>.
       </p>
     </div>
   )}
