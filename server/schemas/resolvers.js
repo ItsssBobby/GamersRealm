@@ -1,7 +1,7 @@
 const { GraphQLScalarType } = require("graphql");
 const { Kind } = require("graphql/language");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const { signToken } = require('../utils/auth');
 const { User, Review, Comment } = require("../models");
 const axios = require("axios");
 require("dotenv").config();
@@ -105,7 +105,7 @@ const resolvers = {
         password: hashedPassword,
       });
 
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+      const token = signToken({ userId: user._id });
 
       return { user, token };
     },
@@ -121,7 +121,7 @@ const resolvers = {
         throw new Error("Invalid credentials");
       }
 
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+      const token = signToken({ userId: user._id });
 
       return { user, token };
     },

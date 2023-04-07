@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLazyQuery } from "@apollo/client";
 import { Link, Route } from "react-router-dom";
 import GameDetails from "./GameDetails";
-import { GET_GAMES, GET_GAME_DETAILS } from "../graphql/queries";
+import { GET_GAMES, GET_GAME_DETAILS } from "../utils/queries";
 
 function SearchBar({ search, setSearch, sort, setSort }) {
   // const [searchData, setSearchData] = useState({

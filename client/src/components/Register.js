@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import { ADD_USER } from "../graphql/mutations";
+import { ADD_USER } from "../utils/mutations";
 import "../Styles/main.css";
 
 function Register(){

@@ -64,7 +64,7 @@ const typeDefs = gql`
     rating: Int!
     user: User!
     gameId: ID!
-    game: String
+    game: Game!
     comments: [Comment]
     createdAt: Date!
     updatedAt: Date!
