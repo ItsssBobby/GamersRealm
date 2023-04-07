@@ -34,7 +34,7 @@ Javascript, HTML, Markdown, React, CSS, JSON, Graphql, and Github
 ## Contact Us
 
 For any quesitons, concerns, or modification request contact us at:
-[Robert](https://github.com/ItsssBobby), [Russ](https://github.com/RussC22), [Patrick](https://github.com/JeepingCoder), [Ferando](https://github.com/fernandot10), [Brandon](https://github.com/nbhsbg53)
+[Robert](https://github.com/ItsssBobby), [Russ](https://github.com/RussC22), [Patrick](https://github.com/JeepingCoder), [Ferando](https://github.com/fernandot10), [Dylan](https://github.com/templarmanatee)
 
 ## License
 
